@@ -1,0 +1,139 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "FOODAPP API",
+    "version": "1.0.0"
+  },
+  "schemes": ["http", "https"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "securityDefinitions": {
+    "JWT": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "Authorization"
+    }
+  },
+  "security": [
+    {
+      "JWT": []
+    }
+  ],
+  "responses": {
+    "UnauthorizedError": {
+      "description": "Access token is missing or invalid"
+    }
+  },
+  "paths": {
+    "/api/v1/user/all": {
+      "get": {
+        "summary": "GET /users",
+        "operationId": "ListUsers",
+        "responses": {
+          "200": {
+            "description": "Users list users",
+            "schema": {
+              "users": {
+                "type": "array",
+                "$ref": "#/definitions/User"
+              }
+            }
+          }
+        },
+        "tags": ["User"]
+      }
+    },
+    "/api/v1/user/login": {
+      "post": {
+        "summary": "Login into your account",
+        "operationId": "Login",
+        "parameters": [
+          {
+            "name": "Credentials",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Login into your account",
+            "schema": {
+              "$ref": "#/definitions/AuthResponse"
+            }
+          }
+        },
+        "tags": ["Authentication"]
+      }
+    },
+
+    "/api/v1/user/create": {
+      "post": {
+        "summary": "Create new account",
+        "operationId": "Register",
+        "parameters": [
+          {
+            "name": "Credentials",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Created account Response",
+            "schema": {
+              "$ref": "#/definitions/AuthResponse"
+            }
+          }
+        },
+        "tags": ["Authentication"]
+      }
+    }
+  },
+
+  "definitions": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "AuthResponse": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
